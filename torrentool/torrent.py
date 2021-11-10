@@ -353,7 +353,7 @@ class Torrent:
         if size_data > size_min:
             size_piece = size_default
 
-        if size_piece > size_max:
+        if size_data > size_max:
             size_piece = size_max
 
         def read(filepath):
