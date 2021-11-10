@@ -330,7 +330,7 @@ class Torrent:
         return target_files_, total_size
 
     @classmethod
-    def create_from(cls, src_path: Union[str, Path]) -> 'Torrent':
+    def create_from(cls, src_path: Union[str, Path],torrent_piece_size=None) -> 'Torrent':
         """Returns Torrent object created from a file or a directory.
 
         :param src_path:
@@ -348,13 +348,18 @@ class Torrent:
         # todo use those limits as advised
         # chunks_min = 1000
         # chunks_max = 2200
-
         size_piece = size_min
-        if size_data > size_min:
-            size_piece = size_default
 
-        if size_data > size_max:
-            size_piece = size_max
+        #for adjustable piece size
+        if(torrent_piece_size is not None):
+            size_piece = torrent_piece_size
+
+        else:
+            if size_data > size_min:
+                size_piece = size_default
+
+            if size_data > size_max:
+                size_piece = size_max
 
         def read(filepath):
             with open(filepath, 'rb') as f:
